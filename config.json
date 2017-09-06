@@ -1,0 +1,8 @@
+{
+  "endpoint" : "https://mail.example.com/EWS/Exchange.asmx",
+  "username" : "username",
+  "password" : "password",
+
+  "title" : "OWA",
+  "text" : "New mail in inbox"
+}

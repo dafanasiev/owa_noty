@@ -1,0 +1,13 @@
+[Unit]
+Description=Owa Noty
+
+[Service]
+Environment="DISPLAY=:0"
+Type=simple
+ExecStart=/opt/owa_noty/owa_noty
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+
