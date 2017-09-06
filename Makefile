@@ -20,6 +20,7 @@ build: vendoring
 clean:
 	rm -rf bin/
 	rm -rf vendor/
+	rm -rf vendor.orig/
 
 prepare_dep:
 ifndef HAS_DEP
