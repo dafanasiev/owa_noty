@@ -3,15 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"github.com/0xAX/notificator"
+	"github.com/dafanasiev/owa_noty/EWS2010sp1"
 	"log"
 	"os"
 	"os/signal"
-	"path/filepath"
-
-	"github.com/0xAX/notificator"
-	"github.com/kardianos/osext"
-
-	"github.com/dafanasiev/owa_noty/EWS2010sp1"
 )
 
 var BuildTime = "N/A"
@@ -35,15 +31,7 @@ func main() {
 	const cfgFileName = "config.json"
 	const newMailIcon = "newmail.png"
 
-	selfDir, err := os.Getwd()
-	cfgFileNameFull := filepath.Join(selfDir, cfgFileName)
-	if _, err := os.Stat(cfgFileNameFull); os.IsNotExist(err) {
-		selfDir, _ = osext.ExecutableFolder()
-		cfgFileNameFull = filepath.Join(selfDir, cfgFileName)
-		if _, err := os.Stat(cfgFileNameFull); os.IsNotExist(err) {
-			log.Panicf("Cant find %s file", cfgFileName)
-		}
-	}
+	cfgFileNameFull := resolvePathOrDie(cfgFileName, homeConfigDir|selfDir)
 
 	cfgFile, err := os.Open(cfgFileNameFull)
 	if err != nil {
@@ -58,7 +46,7 @@ func main() {
 		log.Panicf("Unable to parse %s", cfgFileName)
 	}
 
-	newMailIconFull := filepath.Join(selfDir, newMailIcon)
+	newMailIconFull := resolvePathOrDie(newMailIcon, selfDir)
 
 	notify = notificator.New(notificator.Options{
 		DefaultIcon: newMailIconFull,
