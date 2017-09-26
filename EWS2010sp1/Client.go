@@ -244,6 +244,7 @@ func (s *newMessagesSubscription) Dispose() {
 }
 
 func readOneEnvelope(r *nbByteReader, bStop *abool.AtomicBool) (string, error) {
+	const MAX_ENVELOPE_SIZE = 1 * 1024 * 1024
 	stringBuf := make([]byte, 0, 512)
 
 	for {
@@ -270,6 +271,10 @@ func readOneEnvelope(r *nbByteReader, bStop *abool.AtomicBool) (string, error) {
 			if bytes.HasSuffix(stringBuf, []byte{'<', '/', 'E', 'n', 'v', 'e', 'l', 'o', 'p', 'e', '>'}) {
 				break
 			}
+		}
+
+		if len(stringBuf) > MAX_ENVELOPE_SIZE {
+			return "", fmt.Errorf("Too big envelope or parse error")
 		}
 	}
 
